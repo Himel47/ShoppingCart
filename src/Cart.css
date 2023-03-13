@@ -1,0 +1,9 @@
+.cart_menu{
+    /* float: right; */
+    display:flex;
+    flex-direction: column;
+    border: darkblue solid 1.5px;
+    border-radius: 8px;
+    padding: 18px;
+    width: 290px;
+}

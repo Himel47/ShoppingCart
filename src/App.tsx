@@ -6,23 +6,21 @@ import Cart from './Cart';
 interface Props{}
 
 interface State{
-  items:CartItemType[];
+  //items:CartItemType[];
   cartItems:CartItemType[];
 }
 
 class App extends Component<{},State>{
   
   state:State={
-    items:[],
+    //items:[],
     cartItems:[]
   }
-
 
   handleAddToCart = (clickedItem: CartItemType) => {
     this.setState((prevState) => {
       // Check if item is already in cart
       const isItemInCart = prevState.cartItems.find((item) => item.id === clickedItem.id);
-
       if (isItemInCart) {
         return {
           cartItems: prevState.cartItems.map((item) =>
@@ -30,7 +28,6 @@ class App extends Component<{},State>{
           ),
         };
       }
-
       // Item is not in cart, add it
       return {
         cartItems: [...prevState.cartItems, { ...clickedItem, amount: 1 }],
@@ -50,6 +47,13 @@ class App extends Component<{},State>{
       }, [] as CartItemType[]),
     }));
   };
+
+  handleEmptyCart = ()=>{
+    this.setState({
+      //items:[],
+      cartItems:[],
+    });
+  }
 
   render(){
     const AllItems=[
@@ -84,21 +88,29 @@ class App extends Component<{},State>{
         amount:0,
       },
     ];
-    const{items,cartItems}=this.state;
+    const{cartItems}=this.state;
     
 
     return(
-      <div className='root'>
-        <Cart cartItems = {cartItems} addToCart={this.handleAddToCart}
-        removeFromCart={this.handleRemoveFromCart}/>
+      <div className='root container col-lg-8 offset-2'>
         <h2>Products</h2>
-        {AllItems.map((item)=>(
-          <div key={item.id}>
-            <h3>{item.title}</h3>
-            <p>{item.price}</p>
-            <button onClick={()=>this.handleAddToCart(item)}>Add To Cart</button>
+        <div className='d-flex row g-5'>
+          <div className='col-6'>
+            <div className='row g-3'>
+              {AllItems.map((item)=>(
+                <div className='col-6 border border-primary rounded g-3 p-3 customCart' key={item.id}>
+                  <h3>{item.title}</h3>
+                  <p>Price: <b>{item.price}</b> Taka</p>
+                  <button className='btn btn-sm btn-outline-primary' onClick={()=>this.handleAddToCart(item)}>Add To Cart</button>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+          <div className='col-5 offset-1'>
+            <Cart cartItems = {cartItems} addToCart={this.handleAddToCart}
+            removeFromCart={this.handleRemoveFromCart} emptyCart={this.handleEmptyCart}/>
+          </div>
+        </div>
       </div>
     );
   }
